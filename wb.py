@@ -52,11 +52,11 @@ def getQidFromName  (qname,qNames):
 def getAqStats  (id):
     qname= qNames[((int(id))-1)]
     cursor = cnxn.cursor()
-    sql ='SELECT csqname,callswaiting,convoldestcontact,totalcalls,callsabandoned,callsdequeued FROM RtCSQsSummary where csqname='+"'"+qname+"'"
+    sql ='SELECT csqname,callswaiting,convoldestcontact,totalcalls,callsabandoned,callsdequeued,callshandled FROM RtCSQsSummary where csqname='+"'"+qname+"'"
     cursor.execute(sql)
     row = cursor.fetchone()
     try:
-        qStats=[{'id': id,'qname': row[0],'callswaiting': row[1],'oldestwait': row[2], 'totalcalls': row[3],'abandonedcalls': row[4],'dequeuedcalls': row[5]}]
+        qStats=[{'id': id,'qname': row[0],'callswaiting': row[1],'oldestwait': row[2], 'totalcalls': row[3],'abandonedcalls': row[4],'dequeuedcalls': row[5],'callshandled':row[6]}]
         return qStats
     except:
 	    pass
@@ -64,11 +64,11 @@ def getAqStats  (id):
 
 def getAqStatsbyName  (qname,id):
     cursor = cnxn.cursor()
-    sql ='SELECT csqname,callswaiting,convoldestcontact,totalcalls,callsabandoned,callsdequeued FROM RtCSQsSummary where csqname='+"'"+qname+"'"
+    sql ='SELECT csqname,callswaiting,convoldestcontact,totalcalls,callsabandoned,callsdequeued,callshandled FROM RtCSQsSummary where csqname='+"'"+qname+"'"
     cursor.execute(sql)
     row = cursor.fetchone()
     try:
-        qStats=[{'id': id,'qname': row[0],'callswaiting': row[1],'oldestwait': row[2], 'totalcalls': row[3],'abandonedcalls': row[4],'dequeuedcalls': row[5]}]
+        qStats=[{'id': id,'qname': row[0],'callswaiting': row[1],'oldestwait': row[2], 'totalcalls': row[3],'abandonedcalls': row[4],'dequeuedcalls': row[5],'callshandled':row[6]}]
         return qStats
     except:
 	    pass
@@ -76,13 +76,13 @@ def getAqStatsbyName  (qname,id):
 
 def getqStats  ():
     cursor = cnxn.cursor()
-    cursor.execute("SELECT csqname,callswaiting,convoldestcontact,totalcalls,callsabandoned,callsdequeued FROM RtCSQsSummary")
+    cursor.execute("SELECT csqname,callswaiting,convoldestcontact,totalcalls,callsabandoned,callsdequeued,callshandled FROM RtCSQsSummary")
     rows = cursor.fetchall()
     try:
         qStatsAll=[]
         id=1
         for row in rows:
-            qStatsAll.append({'id': id,'qname': row[0],'callswaiting': row[1],'oldestwait': row[2], 'totalcalls': row[3],'abandonedcalls': row[4],'dequeuedcalls': row[5]})
+            qStatsAll.append({'id': id,'qname': row[0],'callswaiting': row[1],'oldestwait': row[2], 'totalcalls': row[3],'abandonedcalls': row[4],'dequeuedcalls': row[5],'callshandled':row[6]})
             id=id +1
         return qStatsAll
     except:
@@ -141,7 +141,7 @@ if __name__ == '__main__':
                 else:
                     break	
         qNames = getQdetails  ()
-        app.run(debug=True)		
+        app.run(debug=False)		
     except KeyboardInterrupt:
         pass
     finally:
